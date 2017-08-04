@@ -1,41 +1,39 @@
 var eventoControlado = false;
 var msg = ''; 
 var operaciones = ""; 
-
-
-function bigImg(x) {
-    x.style.height = "60px";
-    x.style.width = "60px";
-
-}
-
-function normalImg(x) {
-    x.style.height = "62.91";
-    x.style.width = "22%";
-	
-}
-
 window.onload = function() { document.onkeypress = mostrarInformacionCaracter;
 document.onkeyup = mostrarInformacionTecla; }
-function mostrarInformacionCaracter(evObject) {                
+function mostrarInformacionCaracter(evObject) {  
+               
 				var elCaracter = String.fromCharCode(evObject.which);								
 				var numero= display.innerHTML;
 				numero= numero.length;	
 				if(evObject.which==46){
 		         boton_press("punto");
+				 var res = verificar_punto();
+				 if(res=='0'){
 				 display.innerHTML +=".";
-		        }															
-				if(isNaN(elCaracter)==false && numero <=7 || elCaracter==46 ){
+				 }
+		        }
+				  var tem = display.innerHTML;
+				if(tem=="0."){
+					if(elCaracter!=".")
+				 display.innerHTML =tem + elCaracter;
+				 
+				 elCaracter='';
+				 
+				}															
+				if(isNaN(elCaracter)==false && numero <=7 || elCaracter==46 ){										
                 if (evObject.which!=0 && evObject.which!=13) {
-                msg =  elCaracter;				
-				if(display.innerHTML==0 && elCaracter!="."){
-					display.innerHTML='';			
-									
-					}
-					 boton_press(elCaracter);
-										
-                display.innerHTML += msg }                
-                eventoControlado=true;
+                msg =  elCaracter;								
+				boton_press(elCaracter);				
+				if(display.innerHTML==0 ){
+				display.innerHTML='';
+				}
+														
+                display.innerHTML += msg 
+				}                
+                
 				
 				
 }
@@ -95,8 +93,7 @@ function tipo_caracter(elCaracter){
 	{ 	
 	boton_press("punto");
 	}
-	
-	
+		
 	}
 
 
@@ -104,16 +101,29 @@ function tipo_caracter(elCaracter){
 function numero_por_clic (t){
 		
 	var numero= display.innerHTML;
-  	 numero= numero.length;
-	 if(display.innerHTML==0){
-	 display.innerHTML='';
-		}
+  	 numero= numero.length;	
+	 if(display.innerHTML=='0.')
+	 {
+		 display.innerHTML += t;
+		 	t='';	 
+		 }	 
+	 
+	 if(display.innerHTML=='0'){
+		 
+				display.innerHTML='';
+				}
+	  		
 	 if(numero <=7 ){
+		 
 		 display.innerHTML += t;  
 	 } 	
 	 if(t !="."){
 	 boton_press(t);
 	 	
+	 }else if(display.innerHTML=="."){
+	 
+	 display.innerHTML = 0 + t;
+	 
 	 }
 	
 	}
@@ -124,6 +134,23 @@ function numero_por_clic (t){
 	   document.getElementById(t).style.transform="scale(0.9)";
  setTimeout(function(){ document.getElementById(t).style.transform="scale(1)"; }, 200);
 	  }
+
+ function verificar_punto(){
+	  var sw=0;
+	   var cadena=  display.innerHTML;
+	     for(var i = 0; i < cadena.length; i++){
+			 
+			 var f = cadena[i];
+			 if(f==".")
+			 { 
+			 sw=1;				 
+				 }			 
+			 }
+	   return(sw);
+
+	  }
+
+
 
 
 document.getElementById("1").addEventListener("click", function(){ 
@@ -178,8 +205,12 @@ numero_por_clic ('0');
     
 });
 document.getElementById("punto").addEventListener("click", function(){
+	
+ var res = verificar_punto();	
+if(res=='0'){	
 numero_por_clic (".");   
 tipo_caracter(".");
+}
 });
 
 
